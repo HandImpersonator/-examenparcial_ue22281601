@@ -85,10 +85,10 @@
       <operator activated="false" class="store" compatibility="10.3.000" expanded="true" height="68" name="Store (3)" width="90" x="313" y="227">
         <parameter key="repository_entry" value="../Data/balanced_wo_cd_dataset"/>
       </operator>
-      <operator activated="true" class="retrieve" compatibility="10.3.000" expanded="true" height="68" name="Retrieve balanced_wo_cd_dataset" width="90" x="45" y="325">
+      <operator activated="false" class="retrieve" compatibility="10.3.000" expanded="true" height="68" name="Retrieve balanced_wo_cd_dataset" width="90" x="45" y="325">
         <parameter key="repository_entry" value="../Data/balanced_wo_cd_dataset"/>
       </operator>
-      <operator activated="true" class="nominal_to_text" compatibility="10.3.000" expanded="true" height="82" name="Nominal to Text" width="90" x="179" y="325">
+      <operator activated="false" class="nominal_to_text" compatibility="10.3.000" expanded="true" height="82" name="Nominal to Text" width="90" x="179" y="325">
         <parameter key="attribute_filter_type" value="all"/>
         <parameter key="attribute" value=""/>
         <parameter key="attributes" value=""/>
@@ -102,7 +102,7 @@
         <parameter key="invert_selection" value="false"/>
         <parameter key="include_special_attributes" value="false"/>
       </operator>
-      <operator activated="true" class="text:process_document_from_data" compatibility="10.0.000" expanded="true" height="82" name="Process Documents from Data" width="90" x="313" y="322">
+      <operator activated="false" class="text:process_document_from_data" compatibility="10.0.000" expanded="true" height="82" name="Process Documents from Data" width="90" x="313" y="322">
         <parameter key="create_word_vector" value="true"/>
         <parameter key="vector_creation" value="TF-IDF"/>
         <parameter key="add_meta_information" value="true"/>
@@ -126,21 +126,23 @@
           <operator activated="true" class="text:transform_cases" compatibility="10.0.000" expanded="true" height="68" name="Transform Cases" width="90" x="179" y="34">
             <parameter key="transform_to" value="lower case"/>
           </operator>
-          <operator activated="true" class="text:filter_stopwords_dictionary" compatibility="10.0.000" expanded="true" height="82" name="Filter Stopwords (Dictionary)" width="90" x="313" y="34">
+          <operator activated="true" class="text:filter_stopwords_english" compatibility="10.0.000" expanded="true" height="68" name="Filter Stopwords (English) (2)" width="90" x="313" y="34"/>
+          <operator activated="true" class="text:filter_stopwords_dictionary" compatibility="10.0.000" expanded="true" height="82" name="Filter Stopwords (Dictionary)" width="90" x="447" y="34">
             <parameter key="file" value="/home/user/Documents/RapidMiner/Local Repository/processes/ue22181601/examenparcial_ue22281601/ue22281601/Data/CustomStopwordsLDA.txt"/>
             <parameter key="case_sensitive" value="false"/>
             <parameter key="encoding" value="SYSTEM"/>
           </operator>
-          <operator activated="true" class="text:filter_by_length" compatibility="10.0.000" expanded="true" height="68" name="Filter Tokens (by Length)" width="90" x="447" y="34">
+          <operator activated="true" class="text:filter_by_length" compatibility="10.0.000" expanded="true" height="68" name="Filter Tokens (by Length)" width="90" x="581" y="34">
             <parameter key="min_chars" value="5"/>
             <parameter key="max_chars" value="24"/>
           </operator>
-          <operator activated="true" class="text:generate_n_grams_terms" compatibility="10.0.000" expanded="true" height="68" name="Generate n-Grams (Terms)" width="90" x="581" y="34">
+          <operator activated="true" class="text:generate_n_grams_terms" compatibility="10.0.000" expanded="true" height="68" name="Generate n-Grams (Terms)" width="90" x="715" y="34">
             <parameter key="max_length" value="4"/>
           </operator>
           <connect from_port="document" to_op="Tokenize" to_port="document"/>
           <connect from_op="Tokenize" from_port="document" to_op="Transform Cases" to_port="document"/>
-          <connect from_op="Transform Cases" from_port="document" to_op="Filter Stopwords (Dictionary)" to_port="document"/>
+          <connect from_op="Transform Cases" from_port="document" to_op="Filter Stopwords (English) (2)" to_port="document"/>
+          <connect from_op="Filter Stopwords (English) (2)" from_port="document" to_op="Filter Stopwords (Dictionary)" to_port="document"/>
           <connect from_op="Filter Stopwords (Dictionary)" from_port="document" to_op="Filter Tokens (by Length)" to_port="document"/>
           <connect from_op="Filter Tokens (by Length)" from_port="document" to_op="Generate n-Grams (Terms)" to_port="document"/>
           <connect from_op="Generate n-Grams (Terms)" from_port="document" to_port="document 1"/>
@@ -149,11 +151,206 @@
           <portSpacing port="sink_document 2" spacing="0"/>
         </process>
       </operator>
-      <operator activated="true" class="store" compatibility="10.3.000" expanded="true" height="68" name="Store (5)" width="90" x="447" y="391">
+      <operator activated="false" class="store" compatibility="10.3.000" expanded="true" height="68" name="Store (5)" width="90" x="447" y="391">
         <parameter key="repository_entry" value="../Data/wordlist"/>
       </operator>
-      <operator activated="true" class="store" compatibility="10.3.000" expanded="true" height="68" name="Store (4)" width="90" x="447" y="322">
+      <operator activated="false" class="store" compatibility="10.3.000" expanded="true" height="68" name="Store (4)" width="90" x="447" y="322">
         <parameter key="repository_entry" value="../Data/clasified"/>
+      </operator>
+      <operator activated="false" class="retrieve" compatibility="10.3.000" expanded="true" height="68" name="Retrieve balanced_wo_cd_dataset (2)" width="90" x="45" y="488">
+        <parameter key="repository_entry" value="../Data/balanced_wo_cd_dataset"/>
+      </operator>
+      <operator activated="false" class="subprocess" compatibility="10.3.000" expanded="true" height="82" name="Subprocess" width="90" x="179" y="488">
+        <process expanded="true">
+          <operator activated="true" class="subprocess" compatibility="10.3.000" expanded="true" height="82" name="Preprocess Text" width="90" x="45" y="34">
+            <process expanded="true">
+              <operator activated="true" class="text:data_to_documents" compatibility="10.0.000" expanded="true" height="68" name="Data to Documents" width="90" x="45" y="34">
+                <parameter key="select_attributes_and_weights" value="false"/>
+                <list key="specify_weights"/>
+              </operator>
+              <operator activated="true" class="loop_collection" compatibility="10.3.000" expanded="true" height="82" name="Preprocess Text (Loop Collection)" width="90" x="179" y="34">
+                <parameter key="set_iteration_macro" value="false"/>
+                <parameter key="macro_name" value="iteration"/>
+                <parameter key="macro_start_value" value="1"/>
+                <parameter key="unfold" value="false"/>
+                <process expanded="true">
+                  <operator activated="true" class="text:tokenize" compatibility="10.0.000" expanded="true" height="68" name="Tokenize (2)" width="90" x="45" y="34">
+                    <parameter key="mode" value="non letters"/>
+                    <parameter key="characters" value=".:"/>
+                    <parameter key="language" value="English"/>
+                    <parameter key="max_token_length" value="3"/>
+                  </operator>
+                  <operator activated="true" class="text:transform_cases" compatibility="10.0.000" expanded="true" height="68" name="Transform Cases (2)" width="90" x="179" y="34">
+                    <parameter key="transform_to" value="lower case"/>
+                  </operator>
+                  <operator activated="true" class="text:filter_stopwords_english" compatibility="10.0.000" expanded="true" height="68" name="Filter Stopwords (English)" width="90" x="313" y="34"/>
+                  <operator activated="true" class="text:filter_stopwords_dictionary" compatibility="10.0.000" expanded="true" height="82" name="Filter Stopwords (Dictionary) (2)" width="90" x="447" y="34">
+                    <parameter key="file" value="/home/user/Documents/RapidMiner/Local Repository/processes/ue22181601/examenparcial_ue22281601/ue22281601/Data/CustomStopwordsLDA.txt"/>
+                    <parameter key="case_sensitive" value="false"/>
+                    <parameter key="encoding" value="SYSTEM"/>
+                  </operator>
+                  <operator activated="true" class="text:filter_by_length" compatibility="10.0.000" expanded="true" height="68" name="Filter Tokens (by Length) (2)" width="90" x="581" y="34">
+                    <parameter key="min_chars" value="4"/>
+                    <parameter key="max_chars" value="25"/>
+                  </operator>
+                  <connect from_port="single" to_op="Tokenize (2)" to_port="document"/>
+                  <connect from_op="Tokenize (2)" from_port="document" to_op="Transform Cases (2)" to_port="document"/>
+                  <connect from_op="Transform Cases (2)" from_port="document" to_op="Filter Stopwords (English)" to_port="document"/>
+                  <connect from_op="Filter Stopwords (English)" from_port="document" to_op="Filter Stopwords (Dictionary) (2)" to_port="document"/>
+                  <connect from_op="Filter Stopwords (Dictionary) (2)" from_port="document" to_op="Filter Tokens (by Length) (2)" to_port="document"/>
+                  <connect from_op="Filter Tokens (by Length) (2)" from_port="document" to_port="output 1"/>
+                  <portSpacing port="source_single" spacing="0"/>
+                  <portSpacing port="sink_output 1" spacing="0"/>
+                  <portSpacing port="sink_output 2" spacing="0"/>
+                </process>
+              </operator>
+              <operator activated="true" class="text:documents_to_data" compatibility="10.0.000" expanded="true" height="82" name="Documents to Data" width="90" x="313" y="34">
+                <parameter key="text_attribute" value="FullTextView"/>
+                <parameter key="add_meta_information" value="true"/>
+                <parameter key="datamanagement" value="double_sparse_array"/>
+                <parameter key="data_management" value="auto"/>
+                <parameter key="use_processed_text" value="true"/>
+              </operator>
+              <connect from_port="in 1" to_op="Data to Documents" to_port="example set"/>
+              <connect from_op="Data to Documents" from_port="documents" to_op="Preprocess Text (Loop Collection)" to_port="collection"/>
+              <connect from_op="Preprocess Text (Loop Collection)" from_port="output 1" to_op="Documents to Data" to_port="documents 1"/>
+              <connect from_op="Documents to Data" from_port="example set" to_port="out 1"/>
+              <portSpacing port="source_in 1" spacing="0"/>
+              <portSpacing port="source_in 2" spacing="0"/>
+              <portSpacing port="sink_out 1" spacing="0"/>
+              <portSpacing port="sink_out 2" spacing="0"/>
+            </process>
+          </operator>
+          <operator activated="true" class="operator_toolbox:set_metadata" compatibility="2.17.000" expanded="true" height="68" name="Set Meta Data" width="90" x="179" y="34">
+            <list key="attributes">
+              <parameter key="FullText" value="text.regular"/>
+              <parameter key="TicketType" value="nominal.regular"/>
+              <parameter key="PostTitle" value="polynominal.regular"/>
+              <parameter key="CreationDate" value="date.regular"/>
+            </list>
+            <parameter key="remove_duplicate_roles" value="false"/>
+          </operator>
+          <operator activated="true" class="operator_toolbox:group_into_collection" compatibility="2.17.000" expanded="true" height="82" name="Group Into Collection" width="90" x="313" y="34">
+            <parameter key="group_by_attribute" value="TicketType"/>
+            <parameter key="group_by_attribute (numerical)" value=""/>
+            <parameter key="sorting_order" value="none"/>
+          </operator>
+          <connect from_port="in 1" to_op="Preprocess Text" to_port="in 1"/>
+          <connect from_op="Preprocess Text" from_port="out 1" to_op="Set Meta Data" to_port="exa"/>
+          <connect from_op="Set Meta Data" from_port="exa" to_op="Group Into Collection" to_port="exa"/>
+          <connect from_op="Group Into Collection" from_port="col" to_port="out 1"/>
+          <portSpacing port="source_in 1" spacing="0"/>
+          <portSpacing port="source_in 2" spacing="0"/>
+          <portSpacing port="sink_out 1" spacing="0"/>
+          <portSpacing port="sink_out 2" spacing="0"/>
+        </process>
+      </operator>
+      <operator activated="false" class="loop_collection" compatibility="10.3.000" expanded="true" height="124" name="Loop Collection" width="90" x="313" y="488">
+        <parameter key="set_iteration_macro" value="false"/>
+        <parameter key="macro_name" value="iteration"/>
+        <parameter key="macro_start_value" value="1"/>
+        <parameter key="unfold" value="false"/>
+        <process expanded="true">
+          <operator activated="true" class="extract_macro" compatibility="10.3.000" expanded="true" height="68" name="Extract Macro" width="90" x="37" y="34">
+            <parameter key="macro" value="ticket"/>
+            <parameter key="macro_type" value="data_value"/>
+            <parameter key="statistics" value="average"/>
+            <parameter key="attribute_name" value="TicketType"/>
+            <parameter key="example_index" value="1"/>
+            <list key="additional_macros"/>
+          </operator>
+          <operator activated="true" class="operator_toolbox:lda_exampleset" compatibility="2.17.000" expanded="true" height="124" name="Extract Topics from Data (LDA)" width="90" x="171" y="34">
+            <parameter key="text_attribute" value="FullText"/>
+            <parameter key="number_of_topics" value="10"/>
+            <parameter key="show_optimization_settings" value="false"/>
+            <parameter key="use_alpha_heuristics" value="true"/>
+            <parameter key="alpha_sum" value="0.1"/>
+            <parameter key="use_beta_heuristics" value="true"/>
+            <parameter key="beta" value="0.01"/>
+            <parameter key="optimize_hyperparameters" value="true"/>
+            <parameter key="optimize_interval_for_hyperparameters" value="10"/>
+            <parameter key="iterations" value="100"/>
+            <parameter key="top_words_per_topic" value="10"/>
+            <parameter key="stopword language" value="english"/>
+            <parameter key="reproducible" value="false"/>
+            <parameter key="enable_logging" value="false"/>
+            <parameter key="use_local_random_seed" value="false"/>
+            <parameter key="local_random_seed" value="1992"/>
+          </operator>
+          <operator activated="true" class="store" compatibility="10.3.000" expanded="true" height="68" name="Store (12)" width="90" x="326" y="257">
+            <parameter key="repository_entry" value="../Results/%{ticket}/Performance"/>
+          </operator>
+          <operator activated="true" class="store" compatibility="10.3.000" expanded="true" height="68" name="Store (10)" width="90" x="328" y="179">
+            <parameter key="repository_entry" value="../Results/%{ticket}/TopicModel"/>
+          </operator>
+          <operator activated="true" class="store" compatibility="10.3.000" expanded="true" height="68" name="Store (9)" width="90" x="325" y="107">
+            <parameter key="repository_entry" value="../Results/%{ticket}/Topics"/>
+          </operator>
+          <operator activated="true" class="store" compatibility="10.3.000" expanded="true" height="68" name="Store (8)" width="90" x="326" y="34">
+            <parameter key="repository_entry" value="../Results/%{ticket}/ExampleSet"/>
+          </operator>
+          <connect from_port="single" to_op="Extract Macro" to_port="example set"/>
+          <connect from_op="Extract Macro" from_port="example set" to_op="Extract Topics from Data (LDA)" to_port="exa"/>
+          <connect from_op="Extract Topics from Data (LDA)" from_port="exa" to_op="Store (8)" to_port="input"/>
+          <connect from_op="Extract Topics from Data (LDA)" from_port="top" to_op="Store (9)" to_port="input"/>
+          <connect from_op="Extract Topics from Data (LDA)" from_port="mod" to_op="Store (10)" to_port="input"/>
+          <connect from_op="Extract Topics from Data (LDA)" from_port="per" to_op="Store (12)" to_port="input"/>
+          <connect from_op="Store (12)" from_port="through" to_port="output 3"/>
+          <connect from_op="Store (9)" from_port="through" to_port="output 2"/>
+          <connect from_op="Store (8)" from_port="through" to_port="output 1"/>
+          <portSpacing port="source_single" spacing="0"/>
+          <portSpacing port="sink_output 1" spacing="0"/>
+          <portSpacing port="sink_output 2" spacing="0"/>
+          <portSpacing port="sink_output 3" spacing="0"/>
+          <portSpacing port="sink_output 4" spacing="0"/>
+        </process>
+      </operator>
+      <operator activated="true" class="retrieve" compatibility="10.3.000" expanded="true" height="68" name="Retrieve balanced_wo_cd_dataset (3)" width="90" x="45" y="642">
+        <parameter key="repository_entry" value="../Data/balanced_wo_cd_dataset"/>
+      </operator>
+      <operator activated="true" class="concurrency:cross_validation" compatibility="10.3.000" expanded="true" height="145" name="Cross Validation" width="90" x="179" y="643">
+        <parameter key="split_on_batch_attribute" value="false"/>
+        <parameter key="leave_one_out" value="false"/>
+        <parameter key="number_of_folds" value="10"/>
+        <parameter key="sampling_type" value="automatic"/>
+        <parameter key="use_local_random_seed" value="false"/>
+        <parameter key="local_random_seed" value="1992"/>
+        <parameter key="enable_parallel_execution" value="true"/>
+        <process expanded="true">
+          <operator activated="true" class="naive_bayes" compatibility="10.3.000" expanded="true" height="82" name="Naive Bayes" width="90" x="45" y="34">
+            <parameter key="laplace_correction" value="true"/>
+          </operator>
+          <connect from_port="training set" to_op="Naive Bayes" to_port="training set"/>
+          <connect from_op="Naive Bayes" from_port="model" to_port="model"/>
+          <portSpacing port="source_training set" spacing="0"/>
+          <portSpacing port="sink_model" spacing="0"/>
+          <portSpacing port="sink_through 1" spacing="0"/>
+        </process>
+        <process expanded="true">
+          <operator activated="true" class="apply_model" compatibility="10.3.000" expanded="true" height="82" name="Apply Model" width="90" x="45" y="34">
+            <list key="application_parameters"/>
+          </operator>
+          <operator activated="true" class="performance" compatibility="10.3.000" expanded="true" height="82" name="Performance" width="90" x="179" y="34">
+            <parameter key="use_example_weights" value="true"/>
+          </operator>
+          <connect from_port="model" to_op="Apply Model" to_port="model"/>
+          <connect from_port="test set" to_op="Apply Model" to_port="unlabelled data"/>
+          <connect from_op="Apply Model" from_port="labelled data" to_op="Performance" to_port="labelled data"/>
+          <connect from_op="Performance" from_port="performance" to_port="performance 1"/>
+          <connect from_op="Performance" from_port="example set" to_port="test set results"/>
+          <portSpacing port="source_model" spacing="0"/>
+          <portSpacing port="source_test set" spacing="0"/>
+          <portSpacing port="source_through 1" spacing="0"/>
+          <portSpacing port="sink_test set results" spacing="0"/>
+          <portSpacing port="sink_performance 1" spacing="0"/>
+          <portSpacing port="sink_performance 2" spacing="0"/>
+        </process>
+      </operator>
+      <operator activated="true" class="store" compatibility="10.3.000" expanded="true" height="68" name="Store (7)" width="90" x="313" y="715">
+        <parameter key="repository_entry" value="../Models/Performance"/>
+      </operator>
+      <operator activated="true" class="store" compatibility="10.3.000" expanded="true" height="68" name="Store (6)" width="90" x="313" y="643">
+        <parameter key="repository_entry" value="../Models/Model"/>
       </operator>
       <connect from_op="Read CSV" from_port="output" to_op="Store" to_port="input"/>
       <connect from_op="Retrieve whole_dataset" from_port="output" to_op="Set Role" to_port="example set input"/>
@@ -165,16 +362,21 @@
       <connect from_op="Nominal to Text" from_port="example set output" to_op="Process Documents from Data" to_port="example set"/>
       <connect from_op="Process Documents from Data" from_port="example set" to_op="Store (4)" to_port="input"/>
       <connect from_op="Process Documents from Data" from_port="word list" to_op="Store (5)" to_port="input"/>
-      <connect from_op="Store (5)" from_port="through" to_port="result 2"/>
-      <connect from_op="Store (4)" from_port="through" to_port="result 1"/>
+      <connect from_op="Retrieve balanced_wo_cd_dataset (2)" from_port="output" to_op="Subprocess" to_port="in 1"/>
+      <connect from_op="Subprocess" from_port="out 1" to_op="Loop Collection" to_port="collection"/>
+      <connect from_op="Retrieve balanced_wo_cd_dataset (3)" from_port="output" to_op="Cross Validation" to_port="example set"/>
+      <connect from_op="Cross Validation" from_port="model" to_op="Store (6)" to_port="input"/>
+      <connect from_op="Cross Validation" from_port="performance 1" to_op="Store (7)" to_port="input"/>
       <portSpacing port="source_input 1" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="0"/>
       <portSpacing port="sink_result 2" spacing="0"/>
       <portSpacing port="sink_result 3" spacing="0"/>
+      <portSpacing port="sink_result 4" spacing="0"/>
       <description align="center" color="yellow" colored="false" height="50" resized="true" width="90" x="307" y="50">Task01</description>
       <description align="center" color="yellow" colored="false" height="50" resized="true" width="90" x="558" y="139">Task02</description>
       <description align="center" color="yellow" colored="false" height="50" resized="true" width="90" x="438" y="243">Task03</description>
       <description align="center" color="yellow" colored="false" height="50" resized="true" width="90" x="563" y="340">Task04</description>
+      <description align="center" color="yellow" colored="false" height="50" resized="false" width="90" x="444" y="526">Task05</description>
     </process>
   </operator>
 </process>
